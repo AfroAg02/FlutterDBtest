@@ -1,7 +1,7 @@
 import 'package:dbtest/clases/Contenedor.dart';
 
 class ManifiestoDTO {
-  int idManifiesto;
+  String idManifiesto;
   String exportadora;
   String fechaCarga;
   ContenedorDTO contenedor;

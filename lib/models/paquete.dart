@@ -40,4 +40,19 @@ class Paquete {
       'id_remitente': idRemitente,
     };
   }
+    factory Paquete.fromMap(Map<String, dynamic> map) {
+    return Paquete(
+      idPaquete: map['id_paquete'],
+      hbl: map['hbl'],
+      descripcion: map['descripcion'],
+      cantidadBultos: map['cantidad_bultos'],
+      peso: map['peso'],
+      verificado: map['verificado'] == 1,
+      perdido: map['perdido'] == 1,
+      fechaScaner: DateTime.parse(map['fecha_scaner']),
+      idContenedor: map['id_contenedor'],
+      idConsignatario: map['id_consignatario'],
+      idRemitente: map['id_remitente'],
+    );
+  }
 }

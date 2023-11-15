@@ -22,4 +22,13 @@ class Escaneo {
       'id_paquete': idPaquete,
     };
   }
+    factory Escaneo.fromMap(Map<String, dynamic> map) {
+    return Escaneo(
+      idEscaneo: map['id_escaneo'],
+      descripcion: map['descripcion'],
+      fecha: DateTime.parse(map['fecha']),
+      estado: map['estado'],
+      idPaquete: map['id_paquete'],
+    );
+  }
 }

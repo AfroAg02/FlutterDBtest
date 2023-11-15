@@ -22,5 +22,14 @@ class Manifiesto {
       'exportadora': exportadora,
     };
   }
+    factory Manifiesto.fromMap(Map<String, dynamic> map) {
+    return Manifiesto(
+      idManifiesto: map['id_manifiesto'],
+      fechaCarga: DateTime.parse(map['fecha_carga']),
+      rutaArchivo: map['ruta_archivo'],
+      nombreInterno: map['nombre_interno'],
+      exportadora: map['exportadora'],
+    );
+  }
   
 }

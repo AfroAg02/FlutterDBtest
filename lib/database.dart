@@ -115,6 +115,96 @@ class DatabaseManager {
 
 
 
+Future<Manifiesto> _getManifiesto(int id) async {
+  final db = await instance.database;
+  final maps = await db.query(
+    'Manifiesto',
+    where: 'id_manifiesto = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isNotEmpty) {
+    return Manifiesto.fromMap(maps.first);
+  } else {
+    throw Exception('ID $id not found');
+  }
+}
+
+Future<Contenedor> _getContenedor(int id) async {
+  final db = await instance.database;
+  final maps = await db.query(
+    'Contenedor',
+    where: 'id_contenedor = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isNotEmpty) {
+    return Contenedor.fromMap(maps.first);
+  } else {
+    throw Exception('ID $id not found');
+  }
+}
+
+Future<Paquete> _getPaquete(int id) async {
+  final db = await instance.database;
+  final maps = await db.query(
+    'Paquete',
+    where: 'id_paquete = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isNotEmpty) {
+    return Paquete.fromMap(maps.first);
+  } else {
+    throw Exception('ID $id not found');
+  }
+}
+
+Future<Consignatario> _getConsignatario(int id) async {
+  final db = await instance.database;
+  final maps = await db.query(
+    'Consignatario',
+    where: 'id_consignatario = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isNotEmpty) {
+    return Consignatario.fromMap(maps.first);
+  } else {
+    throw Exception('ID $id not found');
+  }
+}
+Future<Remitente> _getRemitente(int id) async {
+  final db = await instance.database;
+  final maps = await db.query(
+    'Remitente',
+    where: 'id_remitente = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isNotEmpty) {
+    return Remitente.fromMap(maps.first);
+  } else {
+    throw Exception('ID $id not found');
+  }
+}
+Future<Escaneo> _getEscaneo(int id) async {
+  final db = await instance.database;
+  final maps = await db.query(
+    'Escaneo',
+    where: 'id_escaneo = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isNotEmpty) {
+    return Escaneo.fromMap(maps.first);
+  } else {
+    throw Exception('ID $id not found');
+  }
+}
+
+
+
  Future<void> insertConsignatario(Consignatario consignatario) async {
   final db = await instance.database;
   await db.insert(

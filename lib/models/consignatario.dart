@@ -34,4 +34,17 @@ class Consignatario {
       'movil': movil,
     };
   }
+    factory Consignatario.fromMap(Map<String, dynamic> map) {
+    return Consignatario(
+      idConsignatario: map['id_consignatario'],
+      nombreApellido: map['nombre_apellido'],
+      carnet: map['carnet'],
+      pasaporte: map['pasaporte'],
+      direccion: map['direccion'],
+      municipio: map['municipio'],
+      provincia: map['provincia'],
+      telefono: map['telefono'],
+      movil: map['movil'],
+    );
+  }
 }

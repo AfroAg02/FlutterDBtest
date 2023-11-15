@@ -19,4 +19,12 @@ class Remitente {
       'movil': movil,
     };
   }
+    factory Remitente.fromMap(Map<String, dynamic> map) {
+    return Remitente(
+      idRemitente: map['id_remitente'],
+      nombreApellidos: map['nombre_apellidos'],
+      email: map['email'],
+      movil: map['movil'],
+    );
+  }
 }

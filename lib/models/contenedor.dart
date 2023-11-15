@@ -31,4 +31,16 @@ class Contenedor {
       'id_manifiesto': idManifiesto,
     };
   }
+    factory Contenedor.fromMap(Map<String, dynamic> map) {
+    return Contenedor(
+      idContenedor: map['id_contenedor'],
+      sscc: map['sscc'],
+      origen: map['origen'],
+      destino: map['destino'],
+      tamanno: map['tamanno'],
+      totalBultos: map['total_bultos'],
+      fecha: DateTime.parse(map['fecha']),
+      idManifiesto: map['id_manifiesto'],
+    );
+  }
 }

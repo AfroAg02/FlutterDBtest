@@ -1,0 +1,4 @@
+#Tue Nov 14 09:15:18 CST 2023
+base.0=C\:\\Users\\Alejandro Aguirre\\Documents\\Trabajo\\PKTEA Apk\\DatabaseTest\\dbtest\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

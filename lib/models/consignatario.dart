@@ -1,0 +1,47 @@
+class Consignatario {
+  final String nombreApellido;
+  final String carnet;
+  final String pasaporte;
+  final String direccion;
+  final String municipio;
+  final String provincia;
+  final String telefono;
+  final String movil;
+
+  Consignatario({
+    required this.nombreApellido,
+    required this.carnet,
+    required this.pasaporte,
+    required this.direccion,
+    required this.municipio,
+    required this.provincia,
+    required this.telefono,
+    required this.movil,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'nombre_apellido': nombreApellido,
+      'carnet': carnet,
+      'pasaporte': pasaporte,
+      'direccion': direccion,
+      'municipio': municipio,
+      'provincia': provincia,
+      'telefono': telefono,
+      'movil': movil,
+    };
+  }
+  factory Consignatario.fromMap(Map<String, dynamic> map) {
+  return Consignatario(
+    nombreApellido: map['nombre_apellido'],
+    carnet: map['carnet'],
+    pasaporte: map['pasaporte'],
+    direccion: map['direccion'],
+    municipio: map['municipio'],
+    provincia: map['provincia'],
+    telefono: map['telefono'],
+    movil: map['movil'],
+  );
+}
+}
+

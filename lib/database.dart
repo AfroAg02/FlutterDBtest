@@ -1,6 +1,9 @@
+import 'package:dbtest/clases/Consignatario.dart';
 import 'package:dbtest/clases/Contenedor.dart';
+import 'package:dbtest/clases/Escaneo.dart';
 import 'package:dbtest/clases/Manifiesto.dart';
 import 'package:dbtest/clases/Paquete.dart';
+import 'package:dbtest/clases/Remitente.dart';
 
 import 'models/consignatario.dart';
 import 'models/contenedor.dart';
@@ -114,88 +117,141 @@ class DatabaseManager {
       )
     ''');
   }
-Future<ManifiestoDTO> getManifiesto(int id) async {
- Database db = await instance.database;
- var res = await db.rawQuery("""
-   SELECT 
-      M.id_manifiesto,
-      M.fecha_carga,
-      M.ruta_archivo,
-      M.nombre_interno,
-      M.exportadora,
-      C.id_contenedor,
-      C.sscc,
-      C.origen,
-      C.destino,
-      C.tamanno,
-      C.total_bultos,
-      C.fecha,
-      P.id_paquete,
-      P.hbl,
-      P.descripcion,
-      P.cantidad_bultos,
-      P.peso,
-      P.verificado,
-      P.perdido,
-      P.fecha_scaner,
-      R.nombre_apellidos AS nombre_remitente,
-      R.email AS email_remitente,
-      R.movil AS movil_remitente,
-      CN.nombre_apellido AS nombre_consignatario,
-      CN.carnet,
-      CN.pasaporte,
-      CN.direccion,
-      CN.municipio,
-      CN.provincia,
-      CN.telefono,
-      CN.movil,
-      E.id_escaneo,
-      E.descripcion,
-      E.fecha,
-      E.estado
-   FROM Manifiesto M
-   JOIN Contenedor C ON M.id_manifiesto = C.id_manifiesto
-   JOIN Paquete P ON C.id_contenedor = P.id_contenedor
-   JOIN Remitente R ON P.id_remitente = R.id_remitente
-   JOIN Consignatario CN ON P.id_consignatario = CN.id_consignatario
-   JOIN Escaneo E ON P.id_paquete = E.id_paquete
-   WHERE M.id_manifiesto = ?
+
+  Future<ManifiestoDTO> getManifiesto(int id) async {
+    Database db = await instance.database;
+    var res = await db.rawQuery("""
+ SELECT 
+   M.id_manifiesto,
+   M.fecha_carga,
+   M.ruta_archivo,
+   M.nombre_interno,
+   M.exportadora,
+   C.id_contenedor,
+   C.sscc,
+   C.origen,
+   C.destino,
+   C.tamanno,
+   C.total_bultos,
+   C.fecha,
+   P.id_paquete,
+   P.hbl,
+   P.descripcion,
+   P.cantidad_bultos,
+   P.peso,
+   P.verificado,
+   P.perdido,
+   P.fecha_scaner,
+   R.nombre_apellidos AS nombre_remitente,
+   R.email AS email_remitente,
+   R.movil AS movil_remitente,
+   R.id_remitente, // Añadir esta línea
+   CN.nombre_apellido AS nombre_consignatario,
+   CN.carnet,
+   CN.pasaporte,
+   CN.direccion,
+   CN.municipio,
+   CN.provincia,
+   CN.telefono,
+   CN.movil,
+   CN.id_consignatario,
+   E.id_escaneo,
+   E.descripcion as descripcionE,
+   E.fecha,
+   E.estado
+ FROM Manifiesto M
+ JOIN Contenedor C ON M.id_manifiesto = C.id_manifiesto
+ JOIN Paquete P ON C.id_contenedor = P.id_contenedor
+ JOIN Remitente R ON P.id_remitente = R.id_remitente
+ JOIN Consignatario CN ON P.id_consignatario = CN.id_consignatario
+ JOIN Escaneo E ON P.id_paquete = E.id_paquete
+ WHERE M.id_manifiesto = ?
  """, [id]);
 
- getAllPackages(res.toList()) ;
-}
+    // Extraer los detalles del paquete de cada mapa en res
+    List<Map> paquetes = res
+        .map((item) => {
+              'id_paquete': item['id_paquete'],
+              'hbl': item['hbl'],
+              'descripcion': item['descripcion'],
+              'cantidad_bultos': item['cantidad_bultos'],
+              'peso': item['peso'],
+              'verificado': item['verificado'],
+              'perdido': item['perdido'],
+              'fecha_scaner': item['fecha_scaner'],
+              'nombre_remitente': item['nombre_remitente'],
+              'email_remitente': item['email_remitente'],
+              'movil_remitente': item['movil_remitente'],
+              'id_remitente': item['id_remitente'], // Añadir esta línea
+              'nombre_consignatario': item['nombre_consignatario'],
+              'carnet': item['carnet'],
+              'pasaporte': item['pasaporte'],
+              'direccion': item['direccion'],
+              'municipio': item['municipio'],
+              'provincia': item['provincia'],
+              'telefono': item['telefono'],
+              'movil': item['movil'],
+              'id_consignatario': item['id_consignatario'],
+              'id_escaneo': item['id_escaneo'],
+              'descripcionE': item['descripcionE'],
+              'fecha': item['fecha'],
+              'estado': item['estado']
+            })
+        .toList();
+    List<PaqueteDTO> paquetesDTO = [];
+    paquetes.forEach((paquete) {
+      paquetesDTO.add(PaqueteDTO(
+          idPaquete: paquete['id_paquete'],
+          hbl: paquete['hbl'],
+          descripcion: paquete['descripcion'],
+          cantidadBultos: paquete['cantidad_bultos'],
+          peso: paquete['peso'],
+          verificado: paquete['verificado'],
+          perdido: paquete['perdido'],
+          fechaScaner: paquete['fecha_scaner'],
+          Consignatario: ConsignatarioDTO(
+              //Consignatario
+              idConsignatario: paquete['id_consignatario'],
+              nombreApellido: paquete['nombre_consignatario'],
+              carnet: paquete['carnet'],
+              pasaporte: paquete['pasaporte'],
+              direccion: paquete['direccion'],
+              municipio: paquete['municipio'],
+              provincia: paquete['provincia'],
+              telefono: paquete['telefono'],
+              movil: paquete['movil']),
+          Remitente: RemitenteDTO(
+              //Remitente
+              idRemitente: paquete['id_remitente'],
+              nombreApellidos: paquete['nombre_remitente'],
+              email: paquete['email_remitente'],
+              movil: paquete['movil_remitente']),
+          escaneo: EscaneoDTO(
+              //Escaneo
+              idEscaneo: paquete['id_escaneo'],
+              descripcion: paquete['descripcionE'],
+              fecha: paquete['fecha'],
+              estado: paquete['estado'])));
+    });
+    Map<String, dynamic> m = res[0];
+    ManifiestoDTO manifiestoReturn = ManifiestoDTO(
+        idManifiesto: m['id_manifiesto'],
+        exportadora: m['exportadora'],
+        fechaCarga: m['fecha_carga'],
+        rutaArchivo: m['ruta_archivo'],
+        contenedor: ContenedorDTO(
+            idContenedor: m['id_contenedor'],
+            sscc: m['sscc'],
+            origen: m['origen'],
+            destino: m['destino'],
+            tamanno: m['tamanno'],
+            paquetes: paquetesDTO,
+            totalBultos: m['total_bultos'],
+            fecha: m['fecha_scaner']),
+        nombreInterno: m['nombre_interno']);
 
- Future<List<PaqueteDTO> getAllPaquetes(List<Map> res) async {
-  List<Map> paquetes = res.map((item) => {
-  'id_paquete': item['id_paquete'],
-  'hbl': item['hbl'],
-  'descripcion': item['descripcion'],
-  'cantidad_bultos': item['cantidad_bultos'],
-  'peso': item['peso'],
-  'verificado': item['verificado'],
-  'perdido': item['perdido'],
-  'fecha_scaner': item['fecha_scaner'],
-  'nombre_remitente': item['nombre_remitente'],
-  'email_remitente': item['email_remitente'],
-  'movil_remitente': item['movil_remitente'],
-  'nombre_consignatario': item['nombre_consignatario'],
-  'carnet': item['carnet'],
-  'pasaporte': item['pasaporte'],
-  'direccion': item['direccion'],
-  'municipio': item['municipio'],
-  'provincia': item['provincia'],
-  'telefono': item['telefono'],
-  'movil': item['movil'],
-  'id_escaneo': item['id_escaneo'],
-  'descripcion': item['descripcion'],
-  'fecha': item['fecha'],
-  'estado': item['estado']
- }).toList();
-List<PaqueteDTO> paquetesDTO = [];
-
-
- return paquetesDTO;
-}
+    return manifiestoReturn;
+  }
 
 // Future<ManifiestoDTO> getManifiestoDTO(int id) async {
 //   Manifiesto manifiesto = await _getManifiesto(id);
@@ -206,7 +262,7 @@ List<PaqueteDTO> paquetesDTO = [];
 //   Remitente remitente = await _getRemitente(id);
 
 //   ManifiestoDTO manifiestoDTO = ManifiestoDTO(idManifiesto: manifiesto.idManifiesto, exportadora:  manifiesto.exportadora, fechaCarga:  manifiesto.fechaCarga, rutaArchivo:  manifiesto.rutaArchivo, contenedor: getContenedorDTO, nombreInterno:  manifiesto.nombreInterno);
-//   return 
+//   return
 // }
 
 // Future <ContenedorDTO> getContenedorDTO
@@ -299,8 +355,6 @@ List<PaqueteDTO> paquetesDTO = [];
 //   }
 // }
 
-
-
 //  Future<void> insertConsignatario(Consignatario consignatario) async {
 //   final db = await instance.database;
 //   await db.insert(
@@ -350,5 +404,4 @@ List<PaqueteDTO> paquetesDTO = [];
 //     conflictAlgorithm: ConflictAlgorithm.replace,
 //   );
 // }
-
 }

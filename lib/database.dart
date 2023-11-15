@@ -113,81 +113,56 @@ class DatabaseManager {
     ''');
   }
 
-//Buscar por HBL
-  Future<Paquete> buscarPaquetePorHbl(String hblBuscado) async {
-    final db = await DatabaseManager.instance.database;
 
-    List<Map<String, dynamic>> result = await db.query(
-      'Paquete',
-      where: 'hbl = ?',
-      whereArgs: [hblBuscado],
-      limit: 1,
-    );
 
-    if (result.isNotEmpty) {
-      return Paquete.fromMap(result.first);
-    } else {
-      throw Exception('No se encontró un paquete con el HBL proporcionado.');
-    }
-  }
+ Future<void> insertConsignatario(Consignatario consignatario) async {
+  final db = await instance.database;
+  await db.insert(
+    'Consignatario',
+    consignatario.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+Future<void> insertContenedor(Contenedor contenedor) async {
+  final db = await instance.database;
+  await db.insert(
+    'Contenedor',
+    contenedor.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
 
-  Future<List<ManifiestoDTO>> getManifiestos() async {
-    final db = await DatabaseManager.instance.database;
-    List<ManifiestoDTO> manifiestos = [];
-    List<Manifiesto> manifiestosDB = await _getManifiestos();
-    manifiestosDB.forEach((mdb) {
-      ManifiestoDTO m = new ManifiestoDTO(
-          idManifiesto: ,
-          exportadora: exportadora,
-          fechaCarga: fechaCarga,
-          contenedor: await getContenedor());
-    });
-  }
+Future<void> insertEscaneo(Escaneo escaneo) async {
+  final db = await instance.database;
+  await db.insert(
+    'Escaneo',
+    escaneo.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+Future<void> insertManifiesto(Manifiesto manifiesto) async {
+  final db = await instance.database;
+  await db.insert(
+    'Manifiesto',
+    manifiesto.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+Future<void> insertRemitente(Remitente remitente) async {
+  final db = await instance.database;
+  await db.insert(
+    'Remitente',
+    remitente.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+Future<void> insertPaquete(Paquete paquete) async {
+  final db = await instance.database;
+  await db.insert(
+    'Paquete',
+    paquete.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
 
-  Future<List<Manifiesto>> _getManifiestos() async {
-    final db = await DatabaseManager.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('Manifiesto');
-    return List.generate(maps.length, (i) {
-      return Manifiesto.fromMap(maps[i]);
-    });
-  }
-//  Future<List<Consignatario>> getConsignatarios() async {
-//   final db = await DatabaseManager.instance.database;
-//   final List<Map<String, dynamic>> maps = await db.query('Consignatario');
-//   return List.generate(maps.length, (i) {
-//     return Consignatario.fromMap(maps[i]);
-//   });
-// }
-
-  Future<List<Contenedor>> _getContenedors() async {
-    final db = await DatabaseManager.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('Contenedor');
-    return List.generate(maps.length, (i) {
-      return Contenedor.fromMap(maps[i]);
-    });
-  }
-
-// Future<List<Escaneo>> getEscaneos() async {
-//   final db = await DatabaseManager.instance.database;
-//   final List<Map<String, dynamic>> maps = await db.query('Escaneo');
-//   return List.generate(maps.length, (i) {
-//     return Escaneo.fromMap(maps[i]);
-//   });
-// }
-
-  Future<List<Paquete>> _getPaquetes() async {
-    final db = await DatabaseManager.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('Paquete');
-    return List.generate(maps.length, (i) {
-      return Paquete.fromMap(maps[i]);
-    });
-  }
-
-// Future<List<Remitente>> getRemitentes() async {
-//   final db = await DatabaseManager.instance.database;
-//   final List<Map<String, dynamic>> maps = await db.query('Remitente');
-//   return List.generate(maps.length, (i) {
-//     return Remitente.fromMap(maps[i]);
-//   });
-// }
 }

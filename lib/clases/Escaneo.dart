@@ -1,15 +1,21 @@
-class Escaneo {
+class EscaneoDTO {
   final int idEscaneo;
   final String descripcion;
   final DateTime fecha;
-  final String estado;
+  final Status estado;
 
 
-  Escaneo({
+  EscaneoDTO({
     required this.idEscaneo,
     required this.descripcion,
     required this.fecha,
     required this.estado,
     
   });
+}
+
+enum Status {
+  rechazado,
+  aceptado,
+  pendiente,
 }

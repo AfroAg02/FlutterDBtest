@@ -1,4 +1,4 @@
-class Consignatario {
+class ConsignatarioDTO {
   final int idConsignatario;
   String nombreApellido;
   String carnet;
@@ -9,7 +9,7 @@ class Consignatario {
   String telefono;
   String movil;
 
-  Consignatario({
+  ConsignatarioDTO({
     required this.idConsignatario,
     required this.nombreApellido,
     required this.carnet,

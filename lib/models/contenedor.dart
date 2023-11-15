@@ -1,4 +1,5 @@
 class Contenedor {
+  final int idContenedor;
   final String sscc;
   final String origen;
   final String destino;
@@ -8,6 +9,7 @@ class Contenedor {
   final int idManifiesto;
 
   Contenedor({
+    required this.idContenedor,
     required this.sscc,
     required this.origen,
     required this.destino,
@@ -19,6 +21,7 @@ class Contenedor {
 
   Map<String, dynamic> toMap() {
     return {
+      'id_contenedor': idContenedor,
       'sscc': sscc,
       'origen': origen,
       'destino': destino,
@@ -28,15 +31,4 @@ class Contenedor {
       'id_manifiesto': idManifiesto,
     };
   }
-  factory Contenedor.fromMap(Map<String, dynamic> map) {
-  return Contenedor(
-    sscc: map['sscc'],
-    origen: map['origen'],
-    destino: map['destino'],
-    tamanno: map['tamanno'],
-    totalBultos: map['total_bultos'],
-    fecha: DateTime.parse(map['fecha']),
-    idManifiesto: map['id_manifiesto'],
-  );
-}
 }

@@ -252,6 +252,27 @@ class DatabaseManager {
 
     return manifiestoReturn;
   }
+  Future<Paquete> getPaquetePorHBL(String hbl) async {
+ Database db = await instance.database;
+
+ // Ejecuta la consulta SQL
+ List<Map<String, dynamic>> res = await db.query(
+   'Paquete',
+   where: 'hbl = ?',
+   whereArgs: [hbl],
+ );
+
+ // Asegúrate de que la consulta devolvió al menos un resultado
+ if (res.isEmpty) {
+   throw Exception('No se encontró ningún paquete con el HBL: $hbl');
+ }
+
+ // Convierte el primer resultado en un PaqueteDTO
+ Paquete paquete = Paquete.fromMap(res.first);
+
+ return paquete;
+}
+
 
 // Future<ManifiestoDTO> getManifiestoDTO(int id) async {
 //   Manifiesto manifiesto = await _getManifiesto(id);

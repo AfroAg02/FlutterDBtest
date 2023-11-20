@@ -32,6 +32,9 @@ dependencies:
     sdk: flutter
   sqflite: ^2.3.0
   path: ^1.8.3
+  file_picker: ^4.2.0
+  open_file: ^3.2.1
+  excel_dart: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

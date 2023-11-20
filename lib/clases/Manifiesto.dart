@@ -2,10 +2,10 @@ import 'package:dbtest/clases/Contenedor.dart';
 
 class ManifiestoDTO {
   int idManifiesto;
-  String exportadora;
-  DateTime fechaCarga;
-  String rutaArchivo;
-  String nombreInterno;
+  String exportadora;  //B3
+  DateTime fechaCarga;  //B8
+  String rutaArchivo; 
+  String nombreInterno; //B5
   ContenedorDTO contenedor;
 
   ManifiestoDTO({
